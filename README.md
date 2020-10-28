@@ -4,4 +4,4 @@
 |-------------------------|-------|---------------------------------|----------------------------------|--------------------------|
 | Madalina Boboc          | 343C2 | madaeboboc@gmail.com            | Management                       |                          |
 | Mihai Florian-Bogdan    | 343C5 | bogdan.mihai2k@gmail.com        | Development                      | https://bitly.com/98K8eH |
-| Cristian Vlad-Alexandru | 343C5 | cristianvladalexandru@gmail.com | Analyzing requirements & Testing |                          |
+| Cristian Vlad-Alexandru | 343C5 | cristianvladalexandru@gmail.com | Development & Testing            |        on request               |
