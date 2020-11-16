@@ -1,27 +1,25 @@
 import pandas as pd
 import sklearn as sk
 import numpy as np
-from sklearn.tree import DecisionTreeClassifier # Import Decision Tree Classifier
-from sklearn.model_selection import train_test_split # Import train_test_split function
-from sklearn import metrics #Import scikit-learn metrics module for accuracy calculation
-#from sklearn import preprocessing
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+from sklearn import metrics
 
-#le = preprocessing.LabelEncoder()
-#le.fit_transform()
-
+#read relevant symptoms from file
 def readFile(fileName):
-        fileObj = open(fileName, "r") #opens the file in read mode
-        words = fileObj.read().splitlines() #puts the file into an array
+        fileObj = open(fileName, "r")
+        words = fileObj.read().splitlines()
         fileObj.close()
         return words
 
+#read data
 col_names = ['sex', 'vârstă', 'simptome declarate', 'simptome raportate la internare', 'confirmare contact cu o persoană infectată']
 data = pd.read_excel (r'./mps.dataset.xlsx')
 rezultat = pd.DataFrame(data, columns= ['rezultat testare'])
 x = data[col_names]
 y = rezultat
 
-
+#convert data
 i=0
 sex_column = {}
 for sex in x.get("sex"):
@@ -46,9 +44,9 @@ for age in x.get("vârstă"):
 		i=i+1
 
 symptoms = readFile("./simptome_unice")
-symp_column = {}
-j=0
 
+j=0
+symp_column = {}
 for symp in x.get("simptome declarate"):
 	symp = str(symp).lower()
 	symp = symp.replace(",", " ")
@@ -61,13 +59,9 @@ for symp in x.get("simptome declarate"):
 			i = i + 1
 	symp_column[j] = i
 	j = j + 1
-	
-#print(symp_column)
 
-
-reported_column = {}
 j=0
-
+reported_column = {}
 for symp in x.get("simptome raportate la internare"):
 	symp = str(symp).lower()
 	symp = symp.replace(",", " ")
@@ -92,7 +86,6 @@ for answer in x.get("confirmare contact cu o persoană infectată"):
 		contact_column[i] = 0
 		i=i+1
 	
-
 i=0
 result_column = {}
 for result in y.get("rezultat testare"):
@@ -106,13 +99,8 @@ for result in y.get("rezultat testare"):
 	else:
 		result_column[i] = 1
 		i=i+1
-#print(y)
 
-
-
-#print("\nArray after insertion : \n", a) 
-
-
+#fit data into a matrix
 Matrix = [[0 for x in range(5)] for y in range(len(contact_column))] 
 
 for i in range(len(contact_column)):
@@ -122,11 +110,15 @@ for i in range(len(contact_column)):
 	Matrix[i][3] = reported_column[i]
 	Matrix[i][4] = contact_column[i]
 
-
+#split matrix into train and test
 x_train, x_test, y_train, y_test = train_test_split(Matrix, result_column, test_size=0.3, random_state=1)
 
+#create decision tree
 clf = DecisionTreeClassifier()
 clf = clf.fit(x_train, y_train)
 
-y_pred=clf.predict(x_test)
+#predict outcome
+y_pred = clf.predict(x_test)
+
+#print the score
 print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
