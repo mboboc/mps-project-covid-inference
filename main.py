@@ -20,22 +20,8 @@ data = pd.read_excel (r'./mps.dataset.xlsx')
 rezultat = pd.DataFrame(data, columns= ['rezultat testare'])
 x = data[col_names]
 y = rezultat
-#df = pd.DataFrame(data, columns= ['sex'])
 
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=1)
-
-
-#x = x.fillna('nan')
-#for i in x.get('simptome raportate la internare'):
-#	if i != "nan":
-#		i = str(i).lower()
-#		i = i.strip()
-#		if "asim" not in i and not i.startswith("nu") and i != "-":
-#			print(i)
-
-#TODO convert
-#print(x.get("sex")[0])
 i=0
 sex_column = {}
 for sex in x.get("sex"):
@@ -76,7 +62,7 @@ for symp in x.get("simptome declarate"):
 	symp_column[j] = i
 	j = j + 1
 	
-print(symp_column)
+#print(symp_column)
 
 
 reported_column = {}
@@ -93,7 +79,6 @@ for symp in x.get("simptome raportate la internare"):
 		if word in symptoms:
 			i = i + 1
 	reported_column[j] = i
-	print(i)
 	j = j + 1
 
 i=0
@@ -121,12 +106,27 @@ for result in y.get("rezultat testare"):
 	else:
 		result_column[i] = 1
 		i=i+1
-print(y)
+#print(y)
 
 
 
-#clf = DecisionTreeClassifier()
-#clf = clf.fit(x_train, y_train)
+#print("\nArray after insertion : \n", a) 
 
-#y_pred=clf.predict(x_test)
-#print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
+
+Matrix = [[0 for x in range(5)] for y in range(len(contact_column))] 
+
+for i in range(len(contact_column)):
+	Matrix[i][0] = sex_column[i]
+	Matrix[i][1] = age_column[i]
+	Matrix[i][2] = symp_column[i]
+	Matrix[i][3] = reported_column[i]
+	Matrix[i][4] = contact_column[i]
+
+
+x_train, x_test, y_train, y_test = train_test_split(Matrix, result_column, test_size=0.3, random_state=1)
+
+clf = DecisionTreeClassifier()
+clf = clf.fit(x_train, y_train)
+
+y_pred=clf.predict(x_test)
+print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
