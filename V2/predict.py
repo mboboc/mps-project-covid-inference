@@ -6,10 +6,10 @@ from sklearn.model_selection import train_test_split
 from sklearn import metrics
 from joblib import load
 import sys, getopt
+import matplotlib.pyplot as plt
 
 #read data
 inputFile = sys.argv[1]
-print(inputFile)
 col_names = ['sex', 'vârstă', 'simptome declarate', 'simptome raportate la internare', 'confirmare contact cu o persoană infectată']
 data = pd.read_excel(inputFile)
 rezultat = pd.DataFrame(data, columns= ['rezultat testare'])
@@ -118,8 +118,16 @@ clf = load('trainedTree.joblib')
 #predict outcome
 y_pred = clf.predict(x_test)
 
-print(clf.score(x_test, y_test))
-
 #print the score
 print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
 print("Precision:",metrics.precision_score(y_test, y_pred, labels=[2], average='micro'))
+# rapelul
+print("Recall:",metrics.recall_score(y_test,y_pred, labels=[2], average='micro'))
+#F1
+print("F1:",metrics.f1_score(y_test,y_pred, labels=[2], average='micro'))
+
+print("Confusion Matrix:\n",metrics.confusion_matrix(y_test,y_pred))
+
+
+metrics.plot_confusion_matrix(clf,x_test,y_test)
+plt.show()
