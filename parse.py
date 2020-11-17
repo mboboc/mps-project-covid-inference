@@ -1,4 +1,4 @@
-with open("simptome.txt", 'r') as file:
+with open("simptome-complete.txt", 'r') as file:
 	in_string = file.read()
 	in_string = in_string.replace('\r\n', ' ')
 	in_string = in_string.replace('\n', ' ')
@@ -11,6 +11,6 @@ with open("simptome.txt", 'r') as file:
 	output = "\n".join(unique)
 	print(output)
 
-	with open("simptome-unice.txt", 'w') as out:
+	with open("simptome-unice-complete.txt", 'w') as out:
 		out.write(output)
 	
