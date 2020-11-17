@@ -113,9 +113,8 @@ clf = DecisionTreeClassifier()
 clf = clf.fit(x_train, y_train)
 y_pred = clf.predict(x_test)
 
+#code validation
+print(clf.score(x_test, y_test))
+
 #save decision tree in a file
 dump(clf, 'trainedTree.joblib')
-
-#code validation
-print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
-print("Precision:",metrics.precision_score(y_test, y_pred, labels=[2], average='micro'))
