@@ -112,10 +112,16 @@ for i in range(len(contact_column)):
 	Matrix[i][4] = contact_column[i]
 
 #split matrix into train and test
-x_train, x_test, y_train, y_test = train_test_split(Matrix, result_column, train_size=0.9, test_size=0.1, random_state=2, shuffle=False)
+x_train, x_test, y_train, y_test = train_test_split(Matrix, result_column, train_size=0.8, test_size=0.1, random_state=2, shuffle=False)
 
 #create decision tree
 clf = DecisionTreeClassifier()
 clf = clf.fit(x_train, y_train)
+y_pred = clf.predict(x_test)
 
+#save decision tree in a file
 dump(clf, 'trainedTree.joblib')
+
+#code validation
+print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
+print("Precision:",metrics.precision_score(y_test, y_pred, labels=[2], average='micro'))
